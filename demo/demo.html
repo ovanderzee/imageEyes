@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>openSeadragon EyeDropper</title>
+        <script src="../dist/openSeadragonEyeDropper.js"></script>
+        <script>
+var eyeDropper = openSeadragonEyeDropper()
+console.log(`eyeDropper ${typeof eyeDropper}`)
+console.log(eyeDropper.load('demo.jpg'))
+setTimeout(function () {
+  console.log(eyeDropper.getRGB(0,0))
+}, 10000)
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>
