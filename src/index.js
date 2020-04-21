@@ -1,8 +1,7 @@
-import api from './image-js'
+import ijsco from './image-js'
 
-var index = function(url) {
-    console.log('api', typeof api)
-    return api
+var index = async function(url) {
+    return await ijsco(url)
 }
 
 export default index

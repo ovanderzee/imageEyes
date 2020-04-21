@@ -3,16 +3,54 @@
     <head>
         <title>openSeadragon EyeDropper</title>
         <script src="../dist/openSeadragonEyeDropper.js"></script>
-        <script>
-var eyeDropper = openSeadragonEyeDropper()
-console.log(`eyeDropper ${typeof eyeDropper}`)
-console.log(eyeDropper.load('demo.jpg'))
-setTimeout(function () {
-  console.log(eyeDropper.getRGB(0,0))
-}, 10000)
-        </script>
+        <style type="text/css">
+#readout {
+    position: fixed;
+    right: .5em;
+    bottom: .5em;
+    background: #ccc;
+    color: #333;
+    padding: 0 .2em;
+}
+#rgb-sample {
+    display: inline-block;
+    width: .67em;
+    height: .67em;
+    margin: 0 .333em;
+}
+        </style>
     </head>
     <body>
+        <div id="readout">
+            <span id="xy-coordinate"></span><span id="rgb-sample"></span><span id="rgb-value"></span>
+        </div>
+        <img id="target" />
+        <script>
+// start server for localhost at port 8 with npm start
+let eyeDropApi
+let eyeDropDiameter = 11
 
+const targetUrl = 'http://localhost:8/demo/demo.jpg'
+const targetNode = document.getElementById('target')
+const xyCoordinateNode = document.getElementById('xy-coordinate')
+const rgbSampleNode = document.getElementById('rgb-sample')
+const rgbValueNode = document.getElementById('rgb-value')
+const mouseMoveHandler = function (event) {
+    let domRect = targetNode.getBoundingClientRect()
+    let imgX = event.x - domRect.x + document.body.scrollTop
+    let imgY = event.y - domRect.y + document.body.scrollLeft
+    xyCoordinateNode.innerHTML = `${imgX}, ${imgY}`
+    let color = eyeDropApi.getDropColor(imgX, imgY, eyeDropDiameter)
+    rgbSampleNode.style.background = `rgba(${color.join()})`
+    rgbValueNode.innerHTML = JSON.stringify( color )
+}
+
+const eyeDropLoader = async function () {
+    targetNode.src = targetUrl
+    eyeDropApi = await openSeadragonEyeDropper(targetUrl)
+    targetNode.addEventListener('mousemove', mouseMoveHandler)
+}
+eyeDropLoader()
+        </script>
     </body>
 </html>
