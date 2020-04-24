@@ -1,0 +1,39 @@
+body {
+    background: #354;
+    color: #ccc;
+}
+h6 {
+    margin-top: -1em;
+    font-weight: 400;
+    font-family: sans-serif;
+}
+figure {
+    display: inline-block;
+}
+#credit,
+#readout {
+    padding: .167em .333em;
+    font-family: sans-serif;
+}
+#readout {
+    position: fixed;
+    right: .5em;
+    bottom: .5em;
+    background: #ccc;
+    color: #333;
+}
+#xy-coordinate {
+    display: inline-block;
+    width: 6.5em;
+}
+#rgb-sample {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: -.167em;
+    margin: 0 .333em;
+}
+#rgb-value {
+    display: inline-block;
+    width: 10em;
+}

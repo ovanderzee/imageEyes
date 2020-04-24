@@ -1,53 +1,59 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>openSeadragon EyeDropper</title>
-        <script src="../dist/openSeadragonEyeDropper.js"></script>
-        <style type="text/css">
-#readout {
-    position: fixed;
-    right: .5em;
-    bottom: .5em;
-    background: #ccc;
-    color: #333;
-    padding: 0 .2em;
-}
-#rgb-sample {
-    display: inline-block;
-    width: .67em;
-    height: .67em;
-    margin: 0 .333em;
-}
-        </style>
+        <title>Image Eyes</title>
+        <script src="../dist/imageEyes.js"></script>
+        <link rel="stylesheet" type="text/css" href="demo.css" />
     </head>
     <body>
+        <h2>Image Eyes</h2>
+        <h6>this demo was designed to run on localhost:8</h6>
+
+        <figure>
+            <img id="target">
+            <figcaption>
+                <div id="credit"></div>
+            </figcaption>
+        </figure>
+
         <div id="readout">
             <span id="xy-coordinate"></span><span id="rgb-sample"></span><span id="rgb-value"></span>
         </div>
-        <img id="target" />
+
         <script>
+
+
 // start server for localhost at port 8 with npm start
 let eyeDropApi
 let eyeDropDiameter = 11
+let targetUrl
+let targetCredit
 
-const targetUrl = 'http://localhost:8/demo/demo.jpg'
+
+targetUrl = 'http://localhost:8/demo/gull-192909_640.jpg'
+targetCredit = 'pixabay.com/lizzyliz'
+// targetUrl = 'http://localhost:8/demo/ink-texture-2823603_640.jpg'
+// targetCredit = 'pixabay.com/DTech'
 const targetNode = document.getElementById('target')
+const creditNode = document.getElementById('credit')
 const xyCoordinateNode = document.getElementById('xy-coordinate')
 const rgbSampleNode = document.getElementById('rgb-sample')
 const rgbValueNode = document.getElementById('rgb-value')
 const mouseMoveHandler = function (event) {
     let domRect = targetNode.getBoundingClientRect()
-    let imgX = event.x - domRect.x + document.body.scrollTop
-    let imgY = event.y - domRect.y + document.body.scrollLeft
+    let imgX = Math.round(event.x - domRect.x)
+    let imgY = Math.round(event.y - domRect.y)
     xyCoordinateNode.innerHTML = `${imgX}, ${imgY}`
-    let color = eyeDropApi.getDropColor(imgX, imgY, eyeDropDiameter)
+    // let color = eyeDropApi.getDropColor(imgX, imgY, eyeDropDiameter)
+    let color = eyeDropApi.getPixelColor(imgX, imgY)
     rgbSampleNode.style.background = `rgba(${color.join()})`
     rgbValueNode.innerHTML = JSON.stringify( color )
 }
 
 const eyeDropLoader = async function () {
     targetNode.src = targetUrl
-    eyeDropApi = await openSeadragonEyeDropper(targetUrl)
+    creditNode.textContent = targetCredit
+    eyeDropApi = await imageEyes(targetUrl)
     targetNode.addEventListener('mousemove', mouseMoveHandler)
 }
 eyeDropLoader()
