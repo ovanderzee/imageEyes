@@ -1,6 +1,6 @@
 {
     "name": "image-eyes",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "open image for random access and poll RGB values",
     "main": "dist/imageEyes.js",
     "module": "module/imageEyes.js",
@@ -32,8 +32,8 @@
         "image-js": "^0.21.9"
     },
     "devDependencies": {
-        "@babel/core": "^7.9.0",
-        "@babel/preset-env": "^7.9.0",
+        "@babel/core": "^7.9.6",
+        "@babel/preset-env": "^7.9.6",
         "@rollup/plugin-commonjs": "^11.1.0",
         "@rollup/plugin-node-resolve": "^7.1.3",
         "clear-folder": "^1.1.2",
@@ -41,7 +41,7 @@
         "eslint": "^6.5.1",
         "eslint-plugin-jasmine": "^2.10.1",
         "eslint-plugin-jest": "^22.20.0",
-        "jest": "^25.1.0",
+        "jest": "^25.5.4",
         "onchange": "^6.1.1",
         "prettier": "^1.18.2",
         "rollup": "^1.32.1",
