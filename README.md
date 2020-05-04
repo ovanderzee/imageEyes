@@ -15,18 +15,20 @@ and an es-module in the module folder to import.
 
 ## Usage
 
-    const eyes = imageEyes(url)
-    // get color model
-    // get pixel value
-    // get average value of group of pixels
+Get the API thru an async function:
+
+    const eyes = await imageEyes(url)
+
+Then you'll be able to call the eyedropper:
+
+    eyes.getPixelXY(xCoordinate, yCoordinate)
+        // => an array with color and alpha channels
+    eyes.getDropColor(xCoordinate, yCoordinate, sampleSize)
+        // => an array with average color and alpha channels
 
 ### todo later
 
+    // get color model
     // get color profile
     // get meta data
-    // memory checking
-
-## Tests
-
-You will not find any tests here (yet).
-ImageEyes relies on the image-js library.
+    // intelligent caching

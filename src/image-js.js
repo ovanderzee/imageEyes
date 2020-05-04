@@ -66,7 +66,6 @@ const memoryUsage = function() {
     for (let [url, image] of Object.entries(cache)) {
         usage += image.size * image.channels
     }
-    console.log(`memoryUsage ${usage} buffered channel values`)
     return usage
 }
 

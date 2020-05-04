@@ -1,5 +1,5 @@
 {
-    "name": "imageEyes",
+    "name": "image-eyes",
     "version": "0.0.1",
     "description": "open image for random access and poll RGB values",
     "main": "dist/imageEyes.js",
