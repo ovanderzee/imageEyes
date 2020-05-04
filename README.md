@@ -26,6 +26,13 @@ Then you'll be able to call the eyedropper:
     eyes.getDropColor(xCoordinate, yCoordinate, sampleSize)
         // => an array with average color and alpha channels
 
+## Demo
+
+Start the demo server with
+
+    npm start
+
+
 ### todo later
 
     // get color model
