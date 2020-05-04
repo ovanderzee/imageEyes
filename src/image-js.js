@@ -3,7 +3,7 @@ import { mathAvg } from './utilities'
 
 const cache = new Object()
 let cacheOrder = new Array()
-const MAX_CACHE_SIZE = 8
+const MAX_CACHE_SIZE = 32
 let currentUrl
 let currentImage
 let loading
