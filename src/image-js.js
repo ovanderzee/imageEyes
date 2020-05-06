@@ -8,6 +8,23 @@ let currentUrl
 let currentImage
 let loading
 
+/**
+ * Return the color model string
+ * @returns {String} [ RGB | CMYK ]
+ */
+const getColorModel = function(x, y) {
+    if (loading) return
+    const model = currentImage.colorModel
+    return model
+}
+
+/**
+ * Return the values of the color and alpha channels of one point in the image
+ * @param {Number} x pixel count from left of image
+ * @param {Number} y pixel count from top of image
+ * @returns {Array} array with values for each color channel
+ *    @members {Number} value of color or alpha channel
+ */
 const getPixelColor = function(x, y) {
     if (loading) return
     let left = Math.round(x)
@@ -17,12 +34,12 @@ const getPixelColor = function(x, y) {
 }
 
 /**
- * Compose an array with channel values from the average of the channels
+ * Compose an array with channel values from the average of the channels in a rectangular area
  * @param {Number} x pixel count from left of image
  * @param {Number} y pixel count from top of image
  * @param {Number} d width and height of the sample
- * @returns {Array} rgb median value for each color channel
- *    @members {Number} average value of each channel
+ * @returns {Array} array with values for each channel
+ *    @members {Number} average value of color or alpha channel
  */
 const getDropColor = function(x, y, d) {
     if (loading) return
@@ -105,6 +122,7 @@ const api = {
         if (loading) return
         return currentImage
     },
+    getColorModel: getColorModel,
     getPixelColor: getPixelColor,
     getDropColor: getDropColor,
     memoryUsage: memoryUsage,

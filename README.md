@@ -25,6 +25,8 @@ Then you'll be able to call the eyedropper:
         // => an array with color and alpha channels
     eyes.getDropColor(xCoordinate, yCoordinate, sampleSize)
         // => an array with average color and alpha channels
+    eyes.getColorModel()
+        // => a string
 
 ## Demo
 
