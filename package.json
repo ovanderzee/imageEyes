@@ -4,6 +4,7 @@
     "description": "open image for random access and poll RGB values",
     "main": "dist/imageEyes.js",
     "module": "module/imageEyes.js",
+    "types": "src/index.d.ts",
     "scripts": {
         "prebuild": "clear-folder dist module && prettier './{src,test}/*.js' --write",
         "build": "rollup --config",
