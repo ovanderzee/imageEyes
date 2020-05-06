@@ -21,7 +21,7 @@ Get the API thru an async function:
 
 Then you'll be able to call the eyedropper:
 
-    eyes.getPixelXY(xCoordinate, yCoordinate)
+    eyes.getPixelColor(xCoordinate, yCoordinate)
         // => an array with color and alpha channels
     eyes.getDropColor(xCoordinate, yCoordinate, sampleSize)
         // => an array with average color and alpha channels
