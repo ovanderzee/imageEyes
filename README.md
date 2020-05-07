@@ -17,23 +17,28 @@ and an es-module in the module folder to import.
 
 Get the API thru an async function:
 
-    const eyes = await imageEyes(url)
+```js
+const eyes = await imageEyes(url)
+```
 
 Then you'll be able to call the eyedropper:
 
-    eyes.getPixelColor(xCoordinate, yCoordinate)
-        // => an array with color and alpha channels
-    eyes.getDropColor(xCoordinate, yCoordinate, sampleSize)
-        // => an array with average color and alpha channels
-    eyes.getColorModel()
-        // => a string
+```js
+eyes.getPixelColor(xCoordinate, yCoordinate)
+    // => an array with color and alpha channels
+eyes.getDropColor(xCoordinate, yCoordinate, sampleSize)
+    // => an array with average color and alpha channels
+eyes.getColorModel()
+    // => a string
+```
 
 ## Demo
 
 Start the demo server with
 
-    npm start
-
+```sh
+npm start
+```
 
 ### todo later
 
