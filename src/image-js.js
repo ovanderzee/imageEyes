@@ -1,5 +1,5 @@
 import ijs from '../node_modules/image-js/dist/image'
-import { mathAvg } from './utilities'
+import { mathAvg, mathRoundAt } from './utilities'
 
 const cache = new Object()
 let cacheOrder = new Array()
@@ -12,7 +12,7 @@ let loading
  * Return the color model string
  * @returns {String} [ RGB | CMYK ]
  */
-const getColorModel = function(x, y) {
+const getColorModel = function() {
     if (loading) return
     const model = currentImage.colorModel
     return model
@@ -75,15 +75,15 @@ const getDropColor = function(x, y, d) {
 }
 
 /*
- * Report the number of channel values in the buffer
- * @returns {Number} usage - number of buffered channel values
+ * Report the size of the buffer
+ * @returns {String} usage - size of the buffer with unit
  */
 const memoryUsage = function() {
     let usage = 0
-    for (let [url, image] of Object.entries(cache)) {
-        usage += image.size * image.channels
+    for (let [, image] of Object.entries(cache)) {
+        usage += image.data.byteLength
     }
-    return usage
+    return `${mathRoundAt(usage / 1024 / 1024, 3)} MB`
 }
 
 /*
@@ -93,7 +93,7 @@ const purgeCache = function() {
     cacheOrder.forEach(url => {
         if (url !== currentUrl) delete cache[url]
     })
-    cacheOrder = [url]
+    cacheOrder = [currentUrl]
 }
 
 /*
@@ -119,7 +119,7 @@ const maintainCache = function(url) {
 
 const api = {
     get image() {
-        if (loading) return
+        if (loading) return undefined
         return currentImage
     },
     getColorModel: getColorModel,
