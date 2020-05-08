@@ -75,15 +75,15 @@ const getDropColor = function(x, y, d) {
 }
 
 /*
- * Report the number of channel values in the buffer
- * @returns {Number} usage - number of buffered channel values
+ * Report the size of the buffer
+ * @returns {String} usage - size of the buffer with unit
  */
 const memoryUsage = function() {
     let usage = 0
     for (let [url, image] of Object.entries(cache)) {
-        usage += image.size * image.channels
+        usage += image.data.byteLength
     }
-    return usage
+    return `${mathRoundAt(usage / 1024 / 1024, 3)} MB`
 }
 
 /*

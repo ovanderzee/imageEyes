@@ -4,7 +4,7 @@ declare module 'imageEyes' {
     image: string | undefined;
     getPixelColor: (x: number, y: number) => number[];
     getDropColor: (x: number, y: number, d: number) => number[];
-    memoryUsage: () => number;
+    memoryUsage: () => string;
     purgeCache: () => void;
   }
 
