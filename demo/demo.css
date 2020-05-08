@@ -8,6 +8,7 @@ body {
 }
 figure {
     display: inline-block;
+    position: relative;
 }
 figcaption > * {
     display: block;
@@ -20,18 +21,24 @@ figcaption > * {
     color: #333;
     padding: .167em .333em;
 }
-#xy-coordinate {
+#readout > * {
     display: inline-block;
+}
+#xy-coordinate {
     width: 6.5em;
 }
 #rgb-sample {
-    display: inline-block;
     width: 1em;
     height: 1em;
     vertical-align: -.167em;
     margin: 0 .333em;
 }
 #rgb-value {
-    display: inline-block;
     width: 10em;
+}
+#color-model:not(:empty) {
+    width: 3.5em;
+}
+#color-profile:not(:empty) {
+    width: 7em;
 }

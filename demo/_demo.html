@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Image Eyes</title>
+        <script src="../dist/imageEyes.js"></script>
+        <link rel="stylesheet" type="text/css" href="demo.css" />
+    </head>
+    <body>
+        <h2>Image Eyes</h2>
+        <div class="read">this demo was designed to run on localhost:8</div>
+        <div class="read">first image loads automatically, the others on hover</div>
+
+        <figure>
+            <img class="target" src="http://localhost:8/demo/gull-192909_640.jpg" />
+            <figcaption>
+                <strong class="name">Gull</strong>
+                <em class="description">RGB-image</em>
+                <span class="credit">pixabay.com/lizzyliz</span>
+            </figcaption>
+        </figure>
+
+        <figure>
+            <img class="target" src="http://localhost:8/demo/ink-texture-2823603_640_cmyk.jpg" />
+            <figcaption>
+                <strong class="name">Ink Texture</strong>
+                <em class="description">CMYK-image</em>
+                <span class="credit">pixabay.com/DTech</span>
+            </figcaption>
+        </figure>
+
+        <figure>
+            <img class="target" src="http://localhost:8/demo/pin-light.png" />
+            <figcaption>
+                <strong class="name">Pin light</strong>
+                <em class="description">Grey-image</em>
+                <span class="credit"></span>
+            </figcaption>
+        </figure>
+
+        <div id="readout" class="read">
+            <span id="xy-coordinate"></span><span id="rgb-sample"></span><span id="rgb-value"></span>
+            <span id="color-model"></span><span id="color-profile"></span>
+        </div>
+
+        <script src="demo.js"></script>
+
+    </body>
+</html>

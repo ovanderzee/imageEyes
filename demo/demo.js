@@ -13,8 +13,12 @@ const profileNode = document.getElementById('color-profile')
 
 const mouseMoveHandler = function (event) {
     let domRect = this.getBoundingClientRect()
-    let imgX = Math.round(event.x - domRect.x)
-    let imgY = Math.round(event.y - domRect.y)
+    let scaleX = this.clientWidth / this.naturalWidth
+    let scaleY = this.clientHeight / this.naturalHeight
+    let mouseX = event.x - domRect.x
+    let mouseY = event.y - domRect.y
+    let imgX = Math.floor(mouseX / scaleX)
+    let imgY = Math.floor(mouseY / scaleY)
     xyCoordinateNode.textContent = `${imgX}, ${imgY}`
     // let color = eyeDropApi.getDropColor(imgX, imgY, eyeDropDiameter)
     let color = eyeDropApi.getPixelColor(imgX, imgY)
@@ -30,8 +34,7 @@ const eyeDropLoader = async function () {
     eyeDropApi = await imageEyes(this.src)
     this.addEventListener('mousemove', mouseMoveHandler)
     let t1 = new Date()
-    console.log(`loading ${this.src} took ${(t1 - t0) / 1000} seconds`)
-    modelNode.textContent = eyeDropApi.getColorModel()
+    console.log(`loading ${this.src} (${eyeDropApi.imageMemoryUsage()}) took ${(t1 - t0) / 1000} seconds`)
 }
 
 allImages.forEach((img) => {

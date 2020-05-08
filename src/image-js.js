@@ -75,6 +75,15 @@ const getDropColor = function(x, y, d) {
 }
 
 /*
+ * Report the size of the buffer for currentImage
+ * @returns {String} usage - size of the buffer for currentImage, with unit
+ */
+const imageMemoryUsage = function() {
+    let usage = currentImage.data.byteLength
+    return `${mathRoundAt(usage / 1024 / 1024, 3)} MB`
+}
+
+/*
  * Report the size of the buffer
  * @returns {String} usage - size of the buffer with unit
  */
@@ -125,6 +134,7 @@ const api = {
     getColorModel: getColorModel,
     getPixelColor: getPixelColor,
     getDropColor: getDropColor,
+    imageMemoryUsage: imageMemoryUsage,
     memoryUsage: memoryUsage,
     purgeCache: purgeCache,
 }
