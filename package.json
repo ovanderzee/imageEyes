@@ -10,6 +10,7 @@
         "build": "rollup --config",
         "coverage": "clear-folder coverage && jest --coverage",
         "once": "npm run test && npm run build",
+        "pretest": "eslint {src,test}/*.js",
         "test": "exit 0",
         "watch": "onchange --initial \"{src,test}/*.js\" -- npm run once --silent"
     },
