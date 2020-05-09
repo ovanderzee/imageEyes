@@ -1,6 +1,8 @@
 import ijs from '../node_modules/image-js/dist/image'
+import exifr from '../node_modules/exifr/dist/full.esm.mjs' // umd.cjs fout, esm.js/umd.js global fs
 import { mathAvg, mathRoundAt } from './utilities'
 
+const anchorElement = document.createElement('a')
 const cache = new Object()
 let cacheOrder = new Array()
 const MAX_CACHE_SIZE = 32
@@ -16,6 +18,25 @@ const getColorModel = function() {
     if (loading) return
     const model = currentImage.colorModel
     return model
+}
+
+/**
+ * Returns exif, complete or a specified subset
+ * @param {Iterable} properties - zero or more properties
+ * @returns {Object} complete or excerpt of exifObject
+ */
+const getExif = async function() {
+    if (loading) return
+    return await exifr.parse(currentUrl).then(exifObj => {
+        let response = {}
+        const trueProps = Array.from(arguments).filter(tProp =>
+            Object.prototype.hasOwnProperty.call(exifObj, tProp),
+        )
+        trueProps.length
+            ? trueProps.forEach(prop => (response[prop] = exifObj[prop]))
+            : (response = exifObj)
+        return response
+    })
 }
 
 /**
@@ -132,6 +153,7 @@ const api = {
         return currentImage
     },
     getColorModel: getColorModel,
+    getExif: getExif,
     getPixelColor: getPixelColor,
     getDropColor: getDropColor,
     imageMemoryUsage: imageMemoryUsage,
@@ -140,7 +162,13 @@ const api = {
 }
 
 const loader = async function(url) {
-    if (loading || url === currentUrl) return api
+    // promisify this function, then/catch around loading
+    if (loading) return api
+    // url completion and encoding
+    anchorElement.href = url
+    url = anchorElement.href
+
+    if (url === currentUrl) return api
     loading = true
     if (cache[url]) {
         maintainCacheOrder()

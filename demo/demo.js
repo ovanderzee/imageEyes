@@ -4,6 +4,8 @@ let eyeDropDiameter = 11
 
 const firstImage = document.querySelector('figure img')
 const allImages = document.querySelectorAll('figure img')
+const allButtons = document.querySelectorAll('figure button')
+const aside = document.querySelector('aside')
 
 const xyCoordinateNode = document.getElementById('xy-coordinate')
 const rgbSampleNode = document.getElementById('rgb-sample')
@@ -42,4 +44,27 @@ allImages.forEach((img) => {
         eyeDropLoader.call(firstImage)
     }
     img.addEventListener('mouseover', eyeDropLoader.bind(img))
+})
+
+allButtons.forEach(button => {
+    button.addEventListener('click', async function (event) {
+        if (!eyeDropApi) return
+        // const exifObj = await eyeDropApi.getExif('Make','Model')
+        const exifObj = await eyeDropApi.getExif()
+        let exifTable = document.createElement('table')
+        for (let prop in exifObj) {
+            if (typeof exifObj[prop] === 'string' ||
+                typeof exifObj[prop] === 'number' ||
+                exifObj[prop] instanceof Date
+            ) {
+                exifTable.innerHTML += `<tr><td>${prop}</th><td>${exifObj[prop]}</td></tr>`
+            }
+        }
+        exifTable.addEventListener('click', function () {
+            this.parentNode.removeChild(this)
+        })
+        aside.innerHTML = ''
+        aside.appendChild(exifTable)
+        console.log('exiiif: ' , exifObj)
+    })
 })
