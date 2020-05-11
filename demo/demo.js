@@ -46,25 +46,83 @@ allImages.forEach((img) => {
     img.addEventListener('mouseover', eyeDropLoader.bind(img))
 })
 
-allButtons.forEach(button => {
-    button.addEventListener('click', async function (event) {
-        if (!eyeDropApi) return
-        // const exifObj = await eyeDropApi.getExif('Make','Model')
-        const exifObj = await eyeDropApi.getExif()
-        let exifTable = document.createElement('table')
-        for (let prop in exifObj) {
-            if (typeof exifObj[prop] === 'string' ||
-                typeof exifObj[prop] === 'number' ||
-                exifObj[prop] instanceof Date
-            ) {
-                exifTable.innerHTML += `<tr><td>${prop}</th><td>${exifObj[prop]}</td></tr>`
-            }
+const buildMetaDataView = async function(type) {
+    if (!eyeDropApi) return
+    const viewQuery = {}
+    viewQuery[type] = ['Make', 'Model', 'ColorSpace', 'ColorSpaceData', 'ColorMode']
+    viewQuery[type] = true
+    const metaObj = await eyeDropApi.getMetaData(viewQuery)
+    let metaTable = document.createElement('table')
+    for (let prop in metaObj) {
+        if (prop === 'ColorMode' && typeof metaObj[prop] === 'number') {
+            // in XMP, see https://apireference.aspose.com/psd/net/aspose.psd.xmp.schemas.photoshop/colormode
+            const modes = [
+                'Bitmap',
+                'GrayScale',
+                'IndexedColor',
+                'RGB',
+                'CMYK',
+                ,
+                ,
+                'MultiChannel',
+                'Duotone',
+                'LabColor',
+            ]
+            metaTable.innerHTML += `<tr><td>${prop}</th><td>${modes[metaObj[prop]]}</td></tr>`
+        } else if (
+            typeof metaObj[prop] === 'string' ||
+            typeof metaObj[prop] === 'number' ||
+            metaObj[prop] instanceof Date
+        ) {
+            metaTable.innerHTML += `<tr><td>${prop}</th><td>${metaObj[prop]}</td></tr>`
+        } else {
+            const value = JSON.stringify(metaObj[prop]).replace(
+                /([,;])/g,
+                '$1 ',
+            )
+            metaTable.innerHTML += `<tr><td>${prop}</th><td>${value}</td></tr>`
         }
-        exifTable.addEventListener('click', function () {
-            this.parentNode.removeChild(this)
-        })
-        aside.innerHTML = ''
-        aside.appendChild(exifTable)
-        console.log('exiiif: ' , exifObj)
+    }
+    aside.innerHTML = ''
+    aside.appendChild(metaTable)
+}
+
+aside.addEventListener('click', function() {
+    aside.innerHTML = ''
+})
+
+document.querySelectorAll('.exif-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        buildMetaDataView('exif')
+    })
+})
+
+document.querySelectorAll('.gps-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        buildMetaDataView('gps')
+    })
+})
+
+document.querySelectorAll('.basic-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        buildMetaDataView('ifd0')
+    })
+})
+
+document.querySelectorAll('.icc-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        buildMetaDataView('icc')
+    })
+})
+
+document.querySelectorAll('.iptc-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        buildMetaDataView('iptc')
+    })
+})
+
+document.querySelectorAll('.xmp-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        buildMetaDataView('xmp')
     })
 })

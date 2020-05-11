@@ -21,20 +21,35 @@ const getColorModel = function() {
 }
 
 /**
- * Returns exif, complete or a specified subset
+ * Returns exif|icc|xmp, complete or a specified subset
  * @param {Iterable} properties - zero or more properties
  * @returns {Object} complete or excerpt of exifObject
  */
-const getExif = async function() {
+const getMetaData = async function(typeObj) {
     if (loading) return
-    return await exifr.parse(currentUrl).then(exifObj => {
+    const types = {
+        exif: false,
+        gps: false,
+        icc: false,
+        iptc: false,
+        ifd0: false,
+        ifd1: false,
+        xmp: false,
+    }
+    const descriptive = {
+        sanitize: true,
+        reviveValues: true,
+        translateKeys: true,
+        translateValues: true,
+    }
+    const options = Object.assign({}, types, descriptive, typeObj)
+
+    return await exifr.parse(currentUrl, options).then(metaObj => {
         let response = {}
-        const trueProps = Array.from(arguments).filter(tProp =>
-            Object.prototype.hasOwnProperty.call(exifObj, tProp),
-        )
-        trueProps.length
-            ? trueProps.forEach(prop => (response[prop] = exifObj[prop]))
-            : (response = exifObj)
+        const props = Array.from(Object.values(typeObj)[0])
+        props.length
+            ? props.forEach(prop => (response[prop] = metaObj[prop]))
+            : (response = metaObj)
         return response
     })
 }
@@ -153,7 +168,7 @@ const api = {
         return currentImage
     },
     getColorModel: getColorModel,
-    getExif: getExif,
+    getMetaData: getMetaData,
     getPixelColor: getPixelColor,
     getDropColor: getDropColor,
     imageMemoryUsage: imageMemoryUsage,

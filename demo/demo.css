@@ -13,9 +13,9 @@ figure {
 figcaption > * {
     display: block;
 }
-figcaption > button {
+figcaption > buttongroup {
     position: absolute;
-    margin-top: -3em;
+    margin-top: -2.333em;
     margin-left: 1em;
 }
 #readout {
@@ -52,7 +52,7 @@ aside {
     right: 0;
     top: 0;
     max-width: 40em;
-    max-height: 100vh;
+    height: 100vh;
     overflow: scroll;
     font: caption;
     background: #abc;
@@ -63,4 +63,7 @@ aside > * {
 }
 tbody {
     vertical-align: top;
+}
+td {
+    padding: 0 2%;
 }

@@ -19,7 +19,7 @@ Get the API thru an async function:
 
     const eyes = await imageEyes(url)
 
-Then you'll be able to call the eyedropper:
+Then you'll be able to have your eyes at pixelvalues and metadata:
 
     eyes.getPixelColor(xCoordinate, yCoordinate)
         // => an array with color and alpha channels
@@ -27,6 +27,8 @@ Then you'll be able to call the eyedropper:
         // => an array with average color and alpha channels
     eyes.getColorModel()
         // => a string
+    eyes.getMetaData({exif|gps|icc|idf0|iptc|xmp: true|[val1, [val2]]]})
+        // => an object
 
 ## Demo
 
@@ -39,5 +41,4 @@ Start the demo server with
 
     // get color model
     // get color profile
-    // get meta data
     // intelligent caching
