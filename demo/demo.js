@@ -49,7 +49,6 @@ allImages.forEach((img) => {
 const buildMetaDataView = async function(type) {
     if (!eyeDropApi) return
     const viewQuery = {}
-    viewQuery[type] = ['Make', 'Model', 'ColorSpace', 'ColorSpaceData', 'ColorMode']
     viewQuery[type] = true
     const metaObj = await eyeDropApi.getMetaData(viewQuery)
     let metaTable = document.createElement('table')
@@ -76,10 +75,8 @@ const buildMetaDataView = async function(type) {
         ) {
             metaTable.innerHTML += `<tr><td>${prop}</th><td>${metaObj[prop]}</td></tr>`
         } else {
-            const value = JSON.stringify(metaObj[prop]).replace(
-                /([,;])/g,
-                '$1 ',
-            )
+            let value = JSON.stringify(metaObj[prop])
+            if (value) value = value.replace(/([,;])/g, '$1 ')
             metaTable.innerHTML += `<tr><td>${prop}</th><td>${value}</td></tr>`
         }
     }
