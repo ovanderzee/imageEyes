@@ -28,10 +28,16 @@ const mouseMoveHandler = function (event) {
     rgbValueNode.textContent = JSON.stringify( color )
 }
 
-const eyeDropLoader = async function () {
+const clearDashboard = function () {
     xyCoordinateNode.textContent = ''
-    rgbSampleNode.textContent = ''
+    rgbSampleNode.style.background = 'transparent'
     rgbValueNode.textContent = ''
+    modelNode.textContent = ''
+    profileNode.textContent = ''
+}
+
+const eyeDropLoader = async function () {
+    clearDashboard()
     let t0 = new Date()
     eyeDropApi = await imageEyes(this.src)
     this.addEventListener('mousemove', mouseMoveHandler)
@@ -43,7 +49,11 @@ allImages.forEach((img) => {
     if (img === firstImage) {
         eyeDropLoader.call(firstImage)
     }
-    img.addEventListener('mouseover', eyeDropLoader.bind(img))
+    img.addEventListener('mouseenter', async function () {
+        eyeDropLoader.call(img)
+        modelNode.textContent = await eyeDropApi.getColorModel()
+        profileNode.textContent = await eyeDropApi.getColorProfile()
+    })
 })
 
 const buildMetaDataView = async function(type) {
@@ -53,22 +63,7 @@ const buildMetaDataView = async function(type) {
     const metaObj = await eyeDropApi.getMetaData(viewQuery)
     let metaTable = document.createElement('table')
     for (let prop in metaObj) {
-        if (prop === 'ColorMode' && typeof metaObj[prop] === 'number') {
-            // in XMP, see https://apireference.aspose.com/psd/net/aspose.psd.xmp.schemas.photoshop/colormode
-            const modes = [
-                'Bitmap',
-                'GrayScale',
-                'IndexedColor',
-                'RGB',
-                'CMYK',
-                ,
-                ,
-                'MultiChannel',
-                'Duotone',
-                'LabColor',
-            ]
-            metaTable.innerHTML += `<tr><td>${prop}</th><td>${modes[metaObj[prop]]}</td></tr>`
-        } else if (
+        if (
             typeof metaObj[prop] === 'string' ||
             typeof metaObj[prop] === 'number' ||
             metaObj[prop] instanceof Date

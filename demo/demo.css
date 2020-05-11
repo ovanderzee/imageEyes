@@ -22,12 +22,17 @@ figcaption > buttongroup {
     position: fixed;
     right: .5em;
     bottom: .5em;
+    width: 19em;
     background: #ccc;
     color: #333;
     padding: .167em .333em;
 }
 #readout > * {
     display: inline-block;
+    float: left;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 #xy-coordinate {
     width: 6.5em;
@@ -41,11 +46,11 @@ figcaption > buttongroup {
 #rgb-value {
     width: 10em;
 }
-#color-model:not(:empty) {
-    width: 3.5em;
+#color-model {
+    width: 5.5em;
 }
-#color-profile:not(:empty) {
-    width: 7em;
+#color-profile {
+    width: 13.5em;
 }
 aside {
     position: fixed;

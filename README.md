@@ -29,6 +29,8 @@ Then you'll be able to have your eyes at pixelvalues and metadata:
         // => an array with average color and alpha channels
     eyes.getColorModel()
         // => a string
+    eyes.getColorProfile()
+        // => a string
     eyes.getMetaData({exif|gps|icc|idf0|iptc|xmp: true})
         // => an object
 
@@ -42,6 +44,4 @@ npm start
 
 ### todo later
 
-    // get color model
-    // get color profile
     // intelligent caching

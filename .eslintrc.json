@@ -24,6 +24,7 @@
         "no-control-regex": "warn",
         "no-empty": "warn",
         "no-extra-semi": "warn",
+        "no-sparse-arrays": "warn",
         "no-unused-vars": ["warn"]
     }
 }

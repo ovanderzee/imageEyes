@@ -3,6 +3,7 @@ declare module 'imageEyes' {
 
     image: object | undefined;
     getColorModel: () => string | undefined;
+    getColorProfile: () => string | undefined;
     getMetaData: (query: object) => object;
     getPixelColor: (x: number, y: number) => number[] | undefined;
     getDropColor: (x: number, y: number, d: number) => number[] | undefined;
