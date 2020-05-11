@@ -1,10 +1,13 @@
 declare module 'imageEyes' {
   interface EyeDropper {
+
     image: object | undefined;
-    getColorModel: (x: number, y: number) => string | undefined;
+    getColorModel: () => string | undefined;
+    getMetaData: (query: object) => object;
     getPixelColor: (x: number, y: number) => number[] | undefined;
     getDropColor: (x: number, y: number, d: number) => number[] | undefined;
-    memoryUsage: () => number;
+    imageMemoryUsage: () => string;
+    memoryUsage: () => string;
     purgeCache: () => void;
   }
 

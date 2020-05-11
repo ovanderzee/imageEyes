@@ -8,9 +8,15 @@ body {
 }
 figure {
     display: inline-block;
+    position: relative;
 }
 figcaption > * {
     display: block;
+}
+figcaption > buttongroup {
+    position: absolute;
+    margin-top: -2.333em;
+    margin-left: 1em;
 }
 #readout {
     position: fixed;
@@ -20,18 +26,44 @@ figcaption > * {
     color: #333;
     padding: .167em .333em;
 }
-#xy-coordinate {
+#readout > * {
     display: inline-block;
+}
+#xy-coordinate {
     width: 6.5em;
 }
 #rgb-sample {
-    display: inline-block;
     width: 1em;
     height: 1em;
     vertical-align: -.167em;
     margin: 0 .333em;
 }
 #rgb-value {
-    display: inline-block;
     width: 10em;
+}
+#color-model:not(:empty) {
+    width: 3.5em;
+}
+#color-profile:not(:empty) {
+    width: 7em;
+}
+aside {
+    position: fixed;
+    right: 0;
+    top: 0;
+    max-width: 40em;
+    height: 100vh;
+    overflow: scroll;
+    font: caption;
+    background: #abc;
+    color: #345;
+}
+aside > * {
+    margin: 1% 2%;
+}
+tbody {
+    vertical-align: top;
+}
+td {
+    padding: 0 2% 0 0;
 }

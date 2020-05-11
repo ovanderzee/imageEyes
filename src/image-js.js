@@ -1,6 +1,8 @@
 import ijs from '../node_modules/image-js/dist/image'
+import exifr from '../node_modules/exifr/dist/full.esm.mjs' // umd.cjs fout, esm.js/umd.js global fs
 import { mathAvg, mathRoundAt } from './utilities'
 
+const anchorElement = document.createElement('a')
 const cache = new Object()
 let cacheOrder = new Array()
 const MAX_CACHE_SIZE = 32
@@ -16,6 +18,40 @@ const getColorModel = function() {
     if (loading) return
     const model = currentImage.colorModel
     return model
+}
+
+/**
+ * Returns exif|icc|idf0|iptc|xmp, complete or a specified subset
+ * @param {Object} properties - {type: true}
+ * @returns {Object} meta-data Object
+ */
+const getMetaData = async function(query) {
+    if (loading) return
+    const types = {
+        exif: false,
+        gps: false,
+        icc: false,
+        iptc: false,
+        ifd0: false,
+        ifd1: false, // thumbnail info - always off
+        xmp: false,
+    }
+    const descriptive = {
+        sanitize: true,
+        reviveValues: true,
+        translateKeys: true,
+        translateValues: true,
+    }
+    const options = Object.assign({}, types, descriptive, query)
+
+    return await exifr.parse(currentUrl, options).then(metaObj => {
+        let response = {}
+        const props = Array.from(Object.values(query)[0])
+        props.length
+            ? props.forEach(prop => (response[prop] = metaObj[prop]))
+            : (response = metaObj)
+        return response
+    })
 }
 
 /**
@@ -75,6 +111,15 @@ const getDropColor = function(x, y, d) {
 }
 
 /*
+ * Report the size of the buffer for currentImage
+ * @returns {String} usage - size of the buffer for currentImage, with unit
+ */
+const imageMemoryUsage = function() {
+    let usage = currentImage.data.byteLength
+    return `${mathRoundAt(usage / 1024 / 1024, 3)} MB`
+}
+
+/*
  * Report the size of the buffer
  * @returns {String} usage - size of the buffer with unit
  */
@@ -123,14 +168,22 @@ const api = {
         return currentImage
     },
     getColorModel: getColorModel,
+    getMetaData: getMetaData,
     getPixelColor: getPixelColor,
     getDropColor: getDropColor,
+    imageMemoryUsage: imageMemoryUsage,
     memoryUsage: memoryUsage,
     purgeCache: purgeCache,
 }
 
 const loader = async function(url) {
-    if (loading || url === currentUrl) return api
+    // promisify this function, then/catch around loading
+    if (loading) return api
+    // url completion and encoding
+    anchorElement.href = url
+    url = anchorElement.href
+
+    if (url === currentUrl) return api
     loading = true
     if (cache[url]) {
         maintainCacheOrder()
