@@ -96,7 +96,7 @@ const getColorProfile = async function() {
 }
 
 /**
- * Returns exif|icc|idf0|iptc|xmp, complete or a specified subset
+ * Returns exif|icc|ifd0|iptc|xmp, complete or a specified subset
  * @param {Object} properties - {type: true} | {pick: [prop1, prop2, ...]}
  * @returns {Object} meta-data Object
  */
