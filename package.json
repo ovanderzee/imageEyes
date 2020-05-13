@@ -1,6 +1,6 @@
 {
     "name": "image-eyes",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "open image for random access and poll RGB values",
     "main": "dist/imageEyes.js",
     "module": "module/imageEyes.js",
@@ -32,7 +32,7 @@
     },
     "homepage": "https://github.com/ovanderzee/imageEyes#readme",
     "dependencies": {
-        "exifr": "^4.3.5",
+        "exifr": "^5.0.1",
         "image-js": "^0.21.9"
     },
     "devDependencies": {
