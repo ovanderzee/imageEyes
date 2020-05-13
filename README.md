@@ -23,16 +23,18 @@ const eyes = await imageEyes(url)
 
 Then you'll be able to have your eyes at pixel-values and metadata:
 
-    eyes.getPixelColor(xCoordinate, yCoordinate)
-        // => an array with color and alpha channels
-    eyes.getDropColor(xCoordinate, yCoordinate, sampleSize)
-        // => an array with average color and alpha channels
-    eyes.getColorMode()
-        // => a string
-    eyes.getColorProfile()
-        // => a string
-    eyes.getMetaData({exif|gps|icc|ifd0|iptc|xmp: true})
-        // => an object
+```js
+eyes.getPixelColor(xCoordinate, yCoordinate)
+    // => an array with color and alpha channels
+eyes.getDropColor(xCoordinate, yCoordinate, sampleSize)
+    // => an array with average color and alpha channels
+eyes.getColorMode()
+    // => a string
+eyes.getColorProfile()
+    // => a string
+eyes.getMetaData({exif|gps|icc|ifd0|iptc|xmp: true})
+    // => an object
+```
 
 ## Demo
 
@@ -41,15 +43,3 @@ Start the demo server with
 ```sh
 npm start
 ```
-
-### todo later
-
-    // intelligent caching
-
-### resources
-
-https://web.mit.edu/jhawk/mnt/cgs/Image-ExifTool-6.99/html/TagNames/EXIF.html
-https://web.mit.edu/jhawk/mnt/cgs/Image-ExifTool-6.99/html/TagNames/ICC_Profile.html
-https://web.mit.edu/jhawk/mnt/cgs/Image-ExifTool-6.99/html/TagNames/Jpeg2000.html
-https://web.mit.edu/jhawk/mnt/cgs/Image-ExifTool-6.99/html/TagNames/XMP.html
-https://groups.google.com/forum/#!topic/iiif-discuss/cnx0fxRczKc
