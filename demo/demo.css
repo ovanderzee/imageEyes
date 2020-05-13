@@ -41,16 +41,16 @@ figcaption > buttongroup {
     width: 1em;
     height: 1em;
     vertical-align: -.167em;
-    margin: 0 .333em;
+    margin: 0 .333em 0 0;
 }
 #rgb-value {
     width: 10em;
 }
 #color-model {
-    width: 5.5em;
+    width: 6.5em;
 }
 #color-profile {
-    width: 13.5em;
+    width: 12.5em;
 }
 aside {
     position: fixed;
@@ -64,7 +64,14 @@ aside {
     color: #345;
 }
 aside > * {
-    margin: 1% 2%;
+    padding: 1% 2%;
+}
+caption {
+    font-weight: 500;
+    font-size: 1.2em;
+    color: #c48;
+    white-space: nowrap;
+    display: block;
 }
 tbody {
     vertical-align: top;

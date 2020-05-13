@@ -45,3 +45,11 @@ npm start
 ### todo later
 
     // intelligent caching
+
+### resources
+
+https://web.mit.edu/jhawk/mnt/cgs/Image-ExifTool-6.99/html/TagNames/EXIF.html
+https://web.mit.edu/jhawk/mnt/cgs/Image-ExifTool-6.99/html/TagNames/ICC_Profile.html
+https://web.mit.edu/jhawk/mnt/cgs/Image-ExifTool-6.99/html/TagNames/Jpeg2000.html
+https://web.mit.edu/jhawk/mnt/cgs/Image-ExifTool-6.99/html/TagNames/XMP.html
+https://groups.google.com/forum/#!topic/iiif-discuss/cnx0fxRczKc

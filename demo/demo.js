@@ -3,7 +3,7 @@ let eyeDropApi
 let eyeDropDiameter = 11
 
 const firstImage = document.querySelector('figure img')
-const allImages = document.querySelectorAll('figure img')
+const allImageContainers = document.querySelectorAll('figure')
 const allButtons = document.querySelectorAll('figure button')
 const aside = document.querySelector('aside')
 
@@ -12,6 +12,8 @@ const rgbSampleNode = document.getElementById('rgb-sample')
 const rgbValueNode = document.getElementById('rgb-value')
 const modelNode = document.getElementById('color-model')
 const profileNode = document.getElementById('color-profile')
+
+const getUrlFilename = url => url.split('/').reverse()[0]
 
 const mouseMoveHandler = function (event) {
     let domRect = this.getBoundingClientRect()
@@ -24,8 +26,10 @@ const mouseMoveHandler = function (event) {
     xyCoordinateNode.textContent = `${imgX}, ${imgY}`
     // let color = eyeDropApi.getDropColor(imgX, imgY, eyeDropDiameter)
     let color = eyeDropApi.getPixelColor(imgX, imgY)
-    rgbSampleNode.style.background = `rgba(${color.join()})`
-    rgbValueNode.textContent = JSON.stringify( color )
+    if (color) {
+      rgbSampleNode.style.background = `rgba(${color.join()})`
+      rgbValueNode.textContent = JSON.stringify( color )
+    }
 }
 
 const clearDashboard = function () {
@@ -42,26 +46,36 @@ const eyeDropLoader = async function () {
     eyeDropApi = await imageEyes(this.src)
     this.addEventListener('mousemove', mouseMoveHandler)
     let t1 = new Date()
-    console.log(`loading ${this.src} (${eyeDropApi.imageMemoryUsage()}) took ${(t1 - t0) / 1000} seconds`)
+    console.log(`loading ${getUrlFilename(this.src)} (${eyeDropApi.imageMemoryUsage()}) took ${(t1 - t0) / 1000} seconds`)
 }
 
-allImages.forEach((img) => {
+allImageContainers.forEach((fig) => {
+    const img = fig.querySelector('img')
     if (img === firstImage) {
         eyeDropLoader.call(firstImage)
     }
-    img.addEventListener('mouseenter', async function () {
-        eyeDropLoader.call(img)
-        modelNode.textContent = await eyeDropApi.getColorModel()
-        profileNode.textContent = await eyeDropApi.getColorProfile()
+    fig.addEventListener('mouseenter', async function (event) {
+        await eyeDropLoader.call(img)
+        // loading must be cleared
+        let t0 = new Date()
+        setTimeout(async function () {
+            modelNode.textContent = await eyeDropApi.getColorModel()
+        },0)
+        setTimeout(async function () {
+            profileNode.textContent = await eyeDropApi.getColorProfile()
+            let t1 = new Date()
+            console.log(`metadata of ${getUrlFilename(img.src)} took ${(t1 - t0) / 1000} seconds`)
+        },1)
     })
 })
 
-const buildMetaDataView = async function(type) {
+const buildMetaDataView = async function(type, url) {
     if (!eyeDropApi) return
     const viewQuery = {}
     viewQuery[type] = true
     const metaObj = await eyeDropApi.getMetaData(viewQuery)
     let metaTable = document.createElement('table')
+    metaTable.innerHTML += `<caption>${type.toUpperCase()} info for ${getUrlFilename(url)}</caption>`
     for (let prop in metaObj) {
         if (
             typeof metaObj[prop] === 'string' ||
@@ -85,36 +99,36 @@ aside.addEventListener('click', function() {
 
 document.querySelectorAll('.exif-btn').forEach(button => {
     button.addEventListener('click', function() {
-        buildMetaDataView('exif')
+        buildMetaDataView('exif', button.parentNode.parentNode.parentNode.querySelector('img').src)
     })
 })
 
 document.querySelectorAll('.gps-btn').forEach(button => {
     button.addEventListener('click', function() {
-        buildMetaDataView('gps')
+        buildMetaDataView('gps', button.parentNode.parentNode.parentNode.querySelector('img').src)
     })
 })
 
 document.querySelectorAll('.basic-btn').forEach(button => {
     button.addEventListener('click', function() {
-        buildMetaDataView('ifd0')
+        buildMetaDataView('ifd0', button.parentNode.parentNode.parentNode.querySelector('img').src)
     })
 })
 
 document.querySelectorAll('.icc-btn').forEach(button => {
     button.addEventListener('click', function() {
-        buildMetaDataView('icc')
+        buildMetaDataView('icc', button.parentNode.parentNode.parentNode.querySelector('img').src)
     })
 })
 
 document.querySelectorAll('.iptc-btn').forEach(button => {
     button.addEventListener('click', function() {
-        buildMetaDataView('iptc')
+        buildMetaDataView('iptc', button.parentNode.parentNode.parentNode.querySelector('img').src)
     })
 })
 
 document.querySelectorAll('.xmp-btn').forEach(button => {
     button.addEventListener('click', function() {
-        buildMetaDataView('xmp')
+        buildMetaDataView('xmp', button.parentNode.parentNode.parentNode.querySelector('img').src)
     })
 })
