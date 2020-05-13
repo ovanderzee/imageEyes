@@ -1,5 +1,5 @@
 import ijs from '../node_modules/image-js/dist/image'
-import exifr from '../node_modules/exifr/dist/full.esm.mjs' // umd.cjs fout, esm.js/umd.js global fs
+import metaData from './metaData'
 import { mathAvg, mathRoundAt } from './utilities'
 
 const anchorElement = document.createElement('a')
@@ -9,129 +9,15 @@ const MAX_CACHE_SIZE = 32
 let currentUrl
 let currentImage
 let loading
-// XMP ColorMode: see https://apireference.aspose.com/psd/net/aspose.psd.xmp.schemas.photoshop/colormode
-const xmpColorModes = [
-    'Bitmap',
-    'GrayScale',
-    'IndexedColor',
-    'RGB',
-    'CMYK',
-    ,
-    ,
-    'MultiChannel',
-    'Duotone',
-    'LabColor',
-]
 
-const commonKnowledge = function(metaObj, response) {
-    if (metaObj) {
-        if (Object.prototype.hasOwnProperty.call(response, 'ColorMode')) {
-            response.ColorMode = xmpColorModes[metaObj.ColorMode]
-        }
-        if (Object.prototype.hasOwnProperty.call(response, 'ColorSpace')) {
-            if (metaObj.ColorSpace === 1) {
-                response.ColorSpace = 'sRGB'
-            } else if (metaObj.ColorSpace === 65535) {
-                response.ColorSpace = 'Uncalibrated'
-            } else {
-                response.ColorSpace = `${metaObj.ColorSpace} (Non-standard)`
-            }
-        }
-    }
-}
-
-/**
- * Return the color model string
- * @returns {String} [ RGB | CMYK ]
- */
-const getColorModel = async function() {
-    if (loading) return
-    // 'ColorSpaceData' (ICC), 'ColorMode' (XMP)
-    const options = {
-        icc: { pick: ['ColorSpaceData', 'ColorMode'] },
-        xmp: { pick: ['ColorSpaceData', 'ColorMode'] },
-    }
-
-    return await exifr.parse(currentUrl, options).then(metaObj => {
-        if (!metaObj || JSON.stringify(metaObj) === '{}') return ''
-        // XMP
-        if (Object.prototype.hasOwnProperty.call(metaObj, 'ColorMode'))
-            return xmpColorModes[metaObj.ColorMode]
-        // ICC
-        if (Object.prototype.hasOwnProperty.call(metaObj, 'ColorSpaceData'))
-            return metaObj.ColorSpaceData
-        return ''
-    })
-}
 /* image js property always returns RGB
+ (and the dep outputs RGB pixel data as well)
 const getColorModel = function() {
     if (loading) return
     const model = currentImage.colorModel
     return model
 }
 */
-
-/**
- * Return the color profile string
- * @returns {String}
- */
-const getColorProfile = async function() {
-    if (loading) return
-    // 'ColorSpaceData' (ICC), 'ColorMode' (XMP)
-    const options = {
-        icc: { pick: ['ProfileDescription'] },
-        xmp: { pick: ['ICCProfileName'] },
-    }
-
-    return await exifr.parse(currentUrl, options).then(metaObj => {
-        if (!metaObj || JSON.stringify(metaObj) === '{}') return ''
-        // XMP (read faster)
-        if (Object.prototype.hasOwnProperty.call(metaObj, 'ICCProfileName'))
-            return metaObj.ICCProfileName
-        // ICC (could require reading whole file)
-        if (Object.prototype.hasOwnProperty.call(metaObj, 'ProfileDescription'))
-            return metaObj.ProfileDescription
-        return ''
-    })
-}
-
-/**
- * Returns exif|icc|ifd0|iptc|xmp, complete or a specified subset
- * @param {Object} properties - {type: true} | {pick: [prop1, prop2, ...]}
- * @returns {Object} meta-data Object
- */
-const getMetaData = async function(query) {
-    if (loading) return
-    const types = {
-        exif: false,
-        gps: false,
-        icc: false,
-        iptc: false,
-        ifd0: false,
-        ifd1: false, // thumbnail info - always off
-        xmp: false,
-    }
-    const descriptive = {
-        sanitize: true,
-        reviveValues: true,
-        translateKeys: true,
-        translateValues: true,
-    }
-    const options = Object.assign({}, types, descriptive, query)
-
-    return await exifr.parse(currentUrl, options).then(metaObj => {
-        let response = {}
-        const props = Array.from(Object.values(query)[0])
-        props.length
-            ? props.forEach(prop => (response[prop] = metaObj[prop]))
-            : (response = metaObj ? metaObj : {})
-        // common knowledge
-        if (Object.prototype.hasOwnProperty.call(response, 'ColorMode')) {
-            response.ColorMode = xmpColorModes[metaObj.ColorMode]
-        }
-        return response
-    })
-}
 
 /**
  * Return the values of the color and alpha channels of one point in the image
@@ -246,9 +132,9 @@ const api = {
         if (loading) return undefined
         return currentImage
     },
-    getColorModel: getColorModel,
-    getColorProfile: getColorProfile,
-    getMetaData: getMetaData,
+    getColorMode: metaData.getColorMode,
+    getColorProfile: metaData.getColorProfile,
+    getMetaData: metaData.getMetaData,
     getPixelColor: getPixelColor,
     getDropColor: getDropColor,
     imageMemoryUsage: imageMemoryUsage,
@@ -265,6 +151,7 @@ const loader = async function(url) {
 
     if (url === currentUrl) return api
     loading = true
+    metaData.update({ loading: loading })
     if (cache[url]) {
         maintainCacheOrder()
         currentImage = cache[url]
@@ -277,6 +164,7 @@ const loader = async function(url) {
     }
     loading = false
     currentUrl = url
+    metaData.update({ loading: loading, currentUrl: currentUrl })
     return api
 }
 

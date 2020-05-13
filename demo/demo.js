@@ -59,7 +59,7 @@ allImageContainers.forEach((fig) => {
         // loading must be cleared
         let t0 = new Date()
         setTimeout(async function () {
-            modelNode.textContent = await eyeDropApi.getColorModel()
+            modelNode.textContent = await eyeDropApi.getColorMode()
         },0)
         setTimeout(async function () {
             profileNode.textContent = await eyeDropApi.getColorProfile()

@@ -21,13 +21,13 @@ Get the API thru an async function:
 const eyes = await imageEyes(url)
 ```
 
-Then you'll be able to have your eyes at pixelvalues and metadata:
+Then you'll be able to have your eyes at pixel-values and metadata:
 
     eyes.getPixelColor(xCoordinate, yCoordinate)
         // => an array with color and alpha channels
     eyes.getDropColor(xCoordinate, yCoordinate, sampleSize)
         // => an array with average color and alpha channels
-    eyes.getColorModel()
+    eyes.getColorMode()
         // => a string
     eyes.getColorProfile()
         // => a string
