@@ -159,8 +159,19 @@ const loader = async function(url) {
         if (cacheOrder.length >= MAX_CACHE_SIZE) {
             maintainCache()
         }
-        currentImage = await ijs.load(url)
-        cache[url] = currentImage
+        try {
+            currentImage = await ijs.load(url)
+            cache[url] = currentImage
+        } catch (err) {
+            const name =
+                url.substr(0, 5) === 'data:'
+                    ? url.substr(0, 48)
+                    : url.split('/').reverse()[0]
+            console.log(`Could not load ${name}`)
+            loading = false
+            metaData.update({ loading: loading })
+            return api
+        }
     }
     loading = false
     currentUrl = url
