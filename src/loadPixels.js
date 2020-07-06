@@ -1,6 +1,6 @@
 import ijs from '../node_modules/image-js/dist/image'
 import metaData from './metaData'
-import { mathAvg, mathRoundAt } from './utilities'
+import { mathAvg, roundAtDecimals } from 'my-lib'
 
 const anchorElement = document.createElement('a')
 const cache = new Object()
@@ -81,7 +81,7 @@ const getDropColor = function(x, y, d) {
  */
 const imageMemoryUsage = function() {
     let usage = currentImage.data.byteLength
-    return `${mathRoundAt(usage / 1024 / 1024, 3)} MB`
+    return `${roundAtDecimals(usage / 1024 / 1024, 3)} MB`
 }
 
 /*
@@ -93,7 +93,7 @@ const memoryUsage = function() {
     for (let [, image] of Object.entries(cache)) {
         usage += image.data.byteLength
     }
-    return `${mathRoundAt(usage / 1024 / 1024, 3)} MB`
+    return `${roundAtDecimals(usage / 1024 / 1024, 3)} MB`
 }
 
 /*
