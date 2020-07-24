@@ -5,7 +5,7 @@ ImageEyes offers the genuine colordata of images at your webpage,
 to serve scientific purposes.
 Unlike traditional eyedroppers,
 it buffers the image and reads color value from there
-without color correction.
+without the browser doing recalculations or corrections.
 
 ## Install
 
