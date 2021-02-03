@@ -26,7 +26,7 @@ const getColorModel = function() {
  * @returns {Array} array with values for each color channel
  *    @members {Number} value of color or alpha channel
  */
-const getPixelColor = function(x, y) {
+const getPixelColor = function (x, y) {
     if (loading) return
     let left = Math.round(x)
     let top = Math.round(y)
@@ -42,7 +42,7 @@ const getPixelColor = function(x, y) {
  * @returns {Array} array with values for each channel
  *    @members {Number} average value of color or alpha channel
  */
-const getDropColor = function(x, y, d) {
+const getDropColor = function (x, y, d) {
     if (loading) return
     let left = Math.round(x)
     let top = Math.round(y)
@@ -79,7 +79,7 @@ const getDropColor = function(x, y, d) {
  * Report the size of the buffer for currentImage
  * @returns {String} usage - size of the buffer for currentImage, with unit
  */
-const imageMemoryUsage = function() {
+const imageMemoryUsage = function () {
     let usage = currentImage.data.byteLength
     return `${roundAtDecimals(usage / 1024 / 1024, 3)} MB`
 }
@@ -88,7 +88,7 @@ const imageMemoryUsage = function() {
  * Report the size of the buffer
  * @returns {String} usage - size of the buffer with unit
  */
-const memoryUsage = function() {
+const memoryUsage = function () {
     let usage = 0
     for (let [, image] of Object.entries(cache)) {
         usage += image.data.byteLength
@@ -99,8 +99,8 @@ const memoryUsage = function() {
 /*
  * Remove all but the current image from the cache
  */
-const purgeCache = function() {
-    cacheOrder.forEach(url => {
+const purgeCache = function () {
+    cacheOrder.forEach((url) => {
         if (url !== currentUrl) delete cache[url]
     })
     cacheOrder = [currentUrl]
@@ -111,7 +111,7 @@ const purgeCache = function() {
  * @private
  * @param {URL} url - new currentUrl
  */
-const maintainCacheOrder = function(url) {
+const maintainCacheOrder = function (url) {
     const urlIndex = cacheOrder.indexOf(url)
     cacheOrder.splice(urlIndex, 1)
     cacheOrder.push(url)
@@ -121,7 +121,7 @@ const maintainCacheOrder = function(url) {
  * Keep size of cache within limits - remove most discarded entry
  * @private
  */
-const maintainCache = function(url) {
+const maintainCache = function (url) {
     const removeUrl = cacheOrder.splice(0, 1)[0]
     delete cache[removeUrl]
     cacheOrder.push(url)
@@ -142,7 +142,7 @@ const api = {
     purgeCache: purgeCache,
 }
 
-const loader = async function(url) {
+const loader = async function (url) {
     // promisify this function, then/catch around loading
     if (loading) return api
     // url completion and encoding

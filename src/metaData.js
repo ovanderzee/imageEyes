@@ -38,21 +38,21 @@ const xmpColorModes = [
     'LabColor',
 ]
 
-const metaData = (function() {
+const metaData = (function () {
     let state
 
     /**
      * Return the color model string
      * @returns {String} [ RGB | CMYK etc. ]
      */
-    const getColorMode = async function() {
+    const getColorMode = async function () {
         if (state.loading) return
         const options = {
             icc: { pick: ['ColorSpaceData'] },
             //            xmp: { pick: ['ColorMode'] },
         }
 
-        return await exifr.parse(state.currentUrl, options).then(metaObj => {
+        return await exifr.parse(state.currentUrl, options).then((metaObj) => {
             if (metaObj) {
                 //                if (metaObj.ColorMode) return xmpColorModes[metaObj.ColorMode]
                 if (metaObj.ColorSpaceData) return metaObj.ColorSpaceData
@@ -64,7 +64,7 @@ const metaData = (function() {
      * Return the color profile string
      * @returns {String}
      */
-    const getColorProfile = async function() {
+    const getColorProfile = async function () {
         if (state.loading) return
         const queryOptions = {
             icc: { pick: ['ProfileDescription'] },
@@ -75,8 +75,8 @@ const metaData = (function() {
         })
 
         let found = ''
-        const find = async function(options) {
-            await exifr.parse(state.currentUrl, options).then(metaObj => {
+        const find = async function (options) {
+            await exifr.parse(state.currentUrl, options).then((metaObj) => {
                 if (metaObj) {
                     if (metaObj.ProfileDescription)
                         found = metaObj.ProfileDescription
@@ -98,15 +98,15 @@ const metaData = (function() {
      * @param {Object} properties - {type: true} | {pick: [prop1, prop2, ...]}
      * @returns {Object} meta-data Object
      */
-    const getMetaData = async function(query) {
+    const getMetaData = async function (query) {
         if (state.loading) return
         const options = Object.assign({}, metaTypes, metaProcessing, query)
 
-        return await exifr.parse(state.currentUrl, options).then(metaObj => {
+        return await exifr.parse(state.currentUrl, options).then((metaObj) => {
             let response = {}
             const props = Array.from(Object.values(query)[0])
             props.length
-                ? props.forEach(prop => (response[prop] = metaObj[prop]))
+                ? props.forEach((prop) => (response[prop] = metaObj[prop]))
                 : (response = metaObj ? metaObj : {})
             // common knowledge
             if (response.ColorMode) {
@@ -116,7 +116,7 @@ const metaData = (function() {
         })
     }
 
-    const update = loadState => (state = loadState)
+    const update = (loadState) => (state = loadState)
 
     return {
         getMetaData: getMetaData,
