@@ -1,4 +1,4 @@
-import ijs from '../node_modules/image-js/dist/image'
+import ijs from '../node_modules/image-js/dist/image-js'
 import metaData from './metaData'
 import { mathAvg, roundAtDecimals } from 'my-lib'
 

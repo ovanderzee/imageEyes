@@ -33,7 +33,7 @@
     "homepage": "https://github.com/ovanderzee/imageEyes#readme",
     "dependencies": {
         "exifr": "^5.0.6",
-        "image-js": "^0.21.9",
+        "image-js": "^0.28.0",
         "my-lib": "^1.6.1"
     },
     "devDependencies": {
