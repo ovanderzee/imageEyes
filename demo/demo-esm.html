@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Image Eyes</title>
+        <link rel="stylesheet" type="text/css" href="demo.css" />
+    </head>
+    <body>
+        <h2>Image Eyes</h2>
+        <div class="read">run "npm start" and find this demo on localhost:8</div>
+
+        <figure>
+            <img class="target" src="http://localhost:8/demo/IMG_2977.jpg"
+                width="806" height="336" />
+            <figcaption>
+                <buttongroup>
+                    <button type="button" class="basic-btn">basic info</button>
+                    <button type="button" class="exif-btn">exif info</button>
+                    <button type="button" class="gps-btn">gps info</button>
+                    <button type="button" class="icc-btn">icc info</button>
+                    <button type="button" class="iptc-btn">iptc info</button>
+                    <button type="button" class="xmp-btn">xmp info</button>
+                </buttongroup>
+                <strong class="name">"De bleeke dood"</strong>
+                <em class="description">Phone photo</em>
+            </figcaption>
+        </figure>
+
+        <div id="readout" class="read">
+            <span id="xy-coordinate"></span><span id="rgb-sample"></span><span id="rgb-value"></span>
+            <span id="color-model"></span><span id="color-profile"></span>
+        </div>
+
+        <aside></aside>
+
+        <script type="module">
+            import imageEyes from '../module/imageEyes.js'
+            console.log('imageEyes', typeof imageEyes, imageEyes)
+        </script>
+        <!--script src="demo.js"></script-->
+
+    </body>
+</html>
