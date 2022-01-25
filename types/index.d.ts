@@ -1,6 +1,6 @@
 declare module 'imageEyes' {
-  interface EyeDropper {
 
+  interface EyeDropper {
     image: object | undefined;
     getColorMode: () => string | undefined;
     getColorProfile: () => string | undefined;
